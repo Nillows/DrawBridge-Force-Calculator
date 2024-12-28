@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Murphy Bed "Drawbridge" Force Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Murphy Bed "Drawbridge" Force Calculator</h1>
+
+  <div class="input-section">
+    <h2>Enter Known Variables</h2>
+    <p class="note">
+      All calculations are done in SI (meters & newtons) internally.
+      <br/>
+      The pivot is assumed to be the <strong>horizontal center</strong> of the bed. 
+      Therefore, <strong>D=0</strong> means the pulley is directly above the bed's center.
+    </p>
+
+    <!-- ======== UNIT DROPDOWNS ======== -->
+    <label 
+      for="length-unit" 
+      title="Are your lengths in meters or feet?"
+    >
+      Length Unit
+    </label>
+    <select id="length-unit">
+      <option value="meters" selected>meters</option>
+      <option value="feet">feet</option>
+    </select>
+    <br/><br/>
+
+    <label 
+      for="mass-unit" 
+      title="Is your bed input in kg (mass) or lb (weight)?"
+    >
+      Mass/Weight Unit
+    </label>
+    <select id="mass-unit">
+      <option value="kg" selected>kg (mass)</option>
+      <option value="lb">lb (force)</option>
+    </select>
+    <br/><br/>
+
+    <!-- ======== BED LENGTH & WEIGHT ======== -->
+    <label 
+      for="bed-length" 
+      title="Bed length from pivot (hinge) to the opposite end."
+    >
+      Bed Length (L)
+    </label>
+    <input 
+      type="number" 
+      id="bed-length" 
+      step="0.01" 
+      value="2"
+      title="Example: 2 m or ~6.56 ft"
+    />
+    <span class="note">pivot to top</span><br/>
+
+    <label 
+      for="bed-weight"
+      title="If using kg: input the bed's mass. If using lb: input the bed's weight in lb_f."
+    >
+      Bed Input (X)
+    </label>
+    <input 
+      type="number" 
+      id="bed-weight" 
+      step="0.01" 
+      value="50"
+    />
+    <span class="note">mass (kg) or weight (lb_f)</span><br/>
+
+    <!-- ======== ANCHOR & BED ANGLE ======== -->
+    <label 
+      for="anchor-y"
+      title="Distance along the bed's length from the pivot to the rope anchor."
+    >
+      Anchor Y
+    </label>
+    <input 
+      type="number" 
+      id="anchor-y" 
+      step="0.01" 
+      value="1.5"
+      title="e.g., 1.5 m from pivot"
+    />
+    <span class="note">on bed length</span><br/>
+
+    <label 
+      for="theta"
+      title="Angle of the bed from the horizontal (0°=flat, 90°=vertical)."
+    >
+      Bed Angle (θ)
+    </label>
+    <input 
+      type="number" 
+      id="theta" 
+      step="0.1"
+      value="45"
+    />
+    <span class="note">degrees</span><br/>
+
+    <!-- ======== PULLEY LOCATION ======== -->
+    <label 
+      for="pulley-d"
+      title="Horizontal offset of pulley from the bed's center pivot. D=0 => directly above center."
+    >
+      Pulley Horiz. Offset (D)
+    </label>
+    <input 
+      type="number" 
+      id="pulley-d" 
+      step="0.01" 
+      value="0"
+      title="Positive => right of center, negative => left"
+    />
+    <span class="note">center=0</span><br/>
+
+    <label 
+      for="pulley-h"
+      title="Vertical offset of pulley from pivot (above pivot if positive)."
+    >
+      Pulley Vert. Offset (H)
+    </label>
+    <input 
+      type="number" 
+      id="pulley-h" 
+      step="0.01" 
+      value="2.0"
+    />
+    <span class="note">above pivot</span><br/>
+
+    <label 
+      for="pulley-circ"
+      title="Circumference of pulley (rope contact length)."
+    >
+      Pulley Circ. (Z)
+    </label>
+    <input 
+      type="number" 
+      id="pulley-circ" 
+      step="0.01" 
+      value="0.5"
+    />
+    <br/><br/>
+
+    <!-- ======== GRAVITY ======== -->
+    <label 
+      for="gravity"
+      title="Acceleration due to gravity (m/s²). 9.81 is standard Earth in SI."
+    >
+      Gravity (g)
+    </label>
+    <input 
+      type="number" 
+      id="gravity" 
+      step="0.001" 
+      value="9.81"
+    />
+    <span class="note">m/s²</span><br/><br/>
+
+    <!-- ======== ROPES ======== -->
+    <label 
+      for="rope-count"
+      title="1 rope or 2 symmetrical ropes? If 2, each rope is half the total tension."
+    >
+      Number of Ropes
+    </label>
+    <select id="rope-count">
+      <option value="1" selected>1 Rope</option>
+      <option value="2">2 Ropes (symmetrical)</option>
+    </select>
+    <br/><br/>
+
+    <button class="calculate-button" onclick="calculateValues()">Calculate</button>
+  </div>
+
+  <!-- =============== Equations Section =============== -->
+  <div class="equations-section">
+    <h2>Equations & Step-by-Step</h2>
+    <div class="flex-container">
+
+      <div class="flex-item">
+        <h3>Length Conversion</h3>
+        <p class="equation-step" id="eq-length-conversion"></p>
+      </div>
+
+      <div class="flex-item">
+        <h3>Mass/Weight Conversion</h3>
+        <p class="equation-step" id="eq-mass-conversion"></p>
+      </div>
+
+      <div class="flex-item">
+        <h3>Rope Angle (φ)</h3>
+        <p class="equation-step" id="eq-rope-angle"></p>
+      </div>
+
+      <div class="flex-item">
+        <h3>Torque & Counterweight</h3>
+        <p class="equation-step" id="eq-torque-counterweight"></p>
+      </div>
+    </div>
+
+    <div class="results" id="results-output"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

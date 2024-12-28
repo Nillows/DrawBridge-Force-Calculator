@@ -1,0 +1,98 @@
+/* === Global Styles === */
+body {
+  font-family: Arial, sans-serif;
+  margin: 1em;
+  background: #f9f9f9;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+/* === Sections === */
+.input-section,
+.equations-section {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 4px;
+}
+
+/* === Flex Container for Equations === */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.flex-item {
+  flex: 1 1 300px;
+  min-width: 280px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.flex-item h3 {
+  margin-top: 0;
+}
+
+/* === Form Elements === */
+label {
+  display: inline-block;
+  width: 14em;
+  margin-bottom: 0.4em;
+}
+
+input[type="number"] {
+  width: 8em;
+  padding: 0.2em;
+  margin-right: 1em;
+}
+
+select {
+  width: 12em;
+  padding: 0.3em;
+  margin-right: 1em;
+}
+
+/* === Button Styles === */
+.calculate-button {
+  background: #28a745;
+  color: #fff;
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 0.5em;
+}
+
+.calculate-button:hover {
+  background: #218838;
+}
+
+/* === Results & Equation Steps === */
+.results {
+  margin-top: 1em;
+  font-weight: bold;
+  color: #333;
+}
+
+.equation-step {
+  margin-bottom: 1em;
+  padding: 0.5em;
+  background: #f0f0f0;
+  border-radius: 4px;
+  font-family: Consolas, monospace;
+  white-space: pre-wrap; /* Preserve spacing/line-breaks */
+}
+
+/* === Helper Text === */
+.note {
+  font-size: 0.9em;
+  color: #555;
+}
